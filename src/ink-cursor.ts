@@ -1,6 +1,6 @@
 import { InkCursorDot } from "./ink-cursor-dot";
 
-const cursorFilter = `
+const CURSOR_FILTER = `
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
   <defs>
     <filter id="ink-cursor-goo">
@@ -11,20 +11,15 @@ const cursorFilter = `
   </defs>
 </svg>`;
 
-const cursorStyles = new CSSStyleSheet();
-cursorStyles.replaceSync(`
+const CURSOR_STYLES = new CSSStyleSheet();
+CURSOR_STYLES.replaceSync(`
   span {
     position: fixed;
-    
     display: block;
-
     pointer-events: none;
-    
     z-index: var(--ink-cursor-z-index, 1000);
-    
     filter: url(#ink-cursor-goo);
   }
-
   span.disabled {
     display: none;
   }
@@ -68,8 +63,8 @@ export class InkCursor extends HTMLElement {
     this.#sineDots =
       Number(this.dataset.sineDots) || Math.floor(this.#dotAmount * 0.3);
 
-    this.#shadowRoot.adoptedStyleSheets = [cursorStyles];
-    this.#shadowRoot.innerHTML = cursorFilter;
+    this.#shadowRoot.adoptedStyleSheets = [CURSOR_STYLES];
+    this.#shadowRoot.innerHTML = CURSOR_FILTER;
     this.#setupCursorNoneStyle();
 
     const span = document.createElement("span");

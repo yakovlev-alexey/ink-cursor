@@ -1,5 +1,5 @@
-const dotStyles = new CSSStyleSheet();
-dotStyles.replaceSync(`
+const DOT_STYLES = new CSSStyleSheet();
+DOT_STYLES.replaceSync(`
   span {
     position: absolute;
     
@@ -45,7 +45,7 @@ export class InkCursorDot extends HTMLElement {
 
   connectedCallback = () => {
     this.#element = document.createElement("span");
-    this.#shadowRoot.adoptedStyleSheets = [dotStyles];
+    this.#shadowRoot.adoptedStyleSheets = [DOT_STYLES];
     this.#shadowRoot.appendChild(this.#element);
 
     this.#updateTransform();
