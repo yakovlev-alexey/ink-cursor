@@ -39,6 +39,7 @@ jobs:
           version: 8
       - run: pnpm install
       - run: pnpm run build:example
+      - run: mv gh-pages/example.html gh-pages/index.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
