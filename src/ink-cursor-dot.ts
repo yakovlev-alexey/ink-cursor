@@ -4,9 +4,9 @@ DOT_STYLES.replaceSync(`
     position: absolute;
     
     display: block;
-    background: var(--ink-cursor-background);
-    width: var(--ink-cursor-size);
-    height: var(--ink-cursor-size);
+    background: var(--ink-cursor-background, red);
+    width: var(--ink-cursor-size, 26px);
+    height: var(--ink-cursor-size, 26px);
     border-radius: 50%;
 
     transform-origin center center;
@@ -26,7 +26,6 @@ export class InkCursorDot extends HTMLElement {
   #anglespeed: number = 0.05;
 
   #range: number;
-  #limit: number;
 
   #element: HTMLElement | null = null;
   #shadowRoot = this.attachShadow({ mode: "open" });
@@ -40,16 +39,15 @@ export class InkCursorDot extends HTMLElement {
 
     this.#scale = scale;
     this.#range = size / 2 - (size / 2) * this.#scale + 2;
-    this.#limit = size * 0.75 * this.#scale;
   }
 
-  connectedCallback = () => {
+  connectedCallback() {
     this.#element = document.createElement("span");
     this.#shadowRoot.adoptedStyleSheets = [DOT_STYLES];
     this.#shadowRoot.appendChild(this.#element);
 
     this.#updateTransform();
-  };
+  }
 
   #updateTransform = () => {
     this.#element!.style.transform = `translate(${this.x}px,${
@@ -68,19 +66,13 @@ export class InkCursorDot extends HTMLElement {
     this.#angleY = Math.PI * 2 * Math.random();
   };
 
-  #limitValue = (value: number) => {
-    return Math.max(-this.#limit, Math.min(value, this.#limit));
-  };
-
   draw = (idle: boolean = false) => {
     if (idle) {
       this.#angleX += this.#anglespeed;
       this.#angleY += this.#anglespeed;
 
-      this.y =
-        this.#lockY + this.#limitValue(Math.sin(this.#angleY) * this.#range);
-      this.x =
-        this.#lockX + this.#limitValue(Math.sin(this.#angleX) * this.#range);
+      this.y = this.#lockY + Math.sin(this.#angleY) * this.#range;
+      this.x = this.#lockX + Math.sin(this.#angleX) * this.#range;
     }
 
     this.#updateTransform();

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Ink Cursor Example</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+  </head>
+  <body>
+    <ink-cursor enabled="true"></ink-cursor>
+    <div class="box" style="background: orange" data-cursor-color="red"></div>
+    <div class="box" style="background: green" data-cursor-color="purple"></div>
+    <div class="box" style="background: blue" data-cursor-color="cyan"></div>
+    <div class="box" style="background: yellow" data-cursor-color="orange"></div>
+
+    <style>
+      * {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+      }
+
+      body {
+        display: flex;
+        flex-flow: row wrap;
+        min-height: 100vh;
+      }
+
+      .box {
+        min-width: 400px;
+        flex: 2 1 400px;
+        min-height: 400px;
+
+        background: blue;
+        border: 1px solid black;
+      }
+    </style>
+
+    <script type="module">
+      import { InkCursor } from "./src/index.ts";
+      InkCursor.define();
+
+      const inkCursor = document.querySelector("ink-cursor");
+
+      document.querySelectorAll(".box").forEach((box) => {
+        box.addEventListener("mouseenter", (event) => {
+          inkCursor.style.setProperty(
+            "--ink-cursor-background",
+            event.target.dataset.cursorColor
+          );
+        });
+      });
+    </script>
+  </body>
+</html>

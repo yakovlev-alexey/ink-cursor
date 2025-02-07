@@ -8,22 +8,30 @@
   "source": "src/index.ts",
   "types": "dist/types.d.ts",
   "targets": {
-		"main": {
-			"optimize": true
-		},
-		"module": {
-			"optimize": true
-		},
-		"browser": {
-			"optimize": true
-		}
-	},
+    "main": {
+      "optimize": true
+    },
+    "module": {
+      "optimize": true
+    },
+    "browser": {
+      "optimize": true
+    },
+    "example": {
+      "optimize": false,
+      "source": "example.html",
+      "distDir": "gh-pages",
+      "scopeHoist": false
+    }
+  },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "parcel build",
-    "dev": "parcel watch"
+    "build": "parcel build --target main --target module --target browser",
+    "dev": "parcel watch --target main --target module --target browser",
+    "dev:example": "parcel --target example",
+    "build:example": "parcel build --target example"
   },
   "keywords": [],
   "author": "",

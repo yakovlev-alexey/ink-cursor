@@ -49,11 +49,13 @@ export class InkCursor extends HTMLElement {
   #shadowRoot = this.attachShadow({ mode: "open" });
 
   static define = (tag = "ink-cursor") => {
+    InkCursorDot.define(`${tag}-dot`);
     customElements.define(tag, this);
   };
 
-  connectedCallback = () => {
+  connectedCallback() {
     const isTouchDevice = "ontouchstart" in document.documentElement;
+
     if (isTouchDevice) {
       return;
     }
@@ -75,20 +77,20 @@ export class InkCursor extends HTMLElement {
       span.prepend(dot);
     }
 
-    this.#enabled = this.dataset.enabled !== undefined;
+    this.#enabled = this.dataset.enabled !== "true";
     this.#updateStatus();
 
     this.#lastFrame = Number(new Date());
     this.#render(this.#lastFrame);
 
     window.addEventListener("mousemove", this.onMouseMove);
-  };
+  }
 
-  disconnectedCallback = () => {
+  disconnectedCallback() {
     window.removeEventListener("mousemove", this.onMouseMove);
     cancelAnimationFrame(this.#rafId);
     clearTimeout(this.#idleTimerId);
-  };
+  }
 
   onMouseMove = (event: MouseEvent) => {
     this.#cursorPosition.x = event.clientX - this.#dotSize / 2;
@@ -97,9 +99,9 @@ export class InkCursor extends HTMLElement {
   };
 
   #buildDots = () => {
-    const sizeStep = 1 / this.#dotSize;
+    const sizeStep = 1 / this.#dotAmount;
     for (let i = 0; i < this.#dotAmount; i++) {
-      let dot = new InkCursorDot(this.#dotSize, 1 - sizeStep * this.#dotSize);
+      let dot = new InkCursorDot(this.#dotSize, 1 - sizeStep * i);
       this.#dots.push(dot);
     }
   };
